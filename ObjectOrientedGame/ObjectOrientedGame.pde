@@ -1,5 +1,5 @@
-Player1 p1Stone;
-Player2 p2Stone;
+Player1[] p1Stone = new Player1[2];
+Player2[] p2Stone = new Player2[2];
 
 PVector targetPosition;
 PImage redStone;
@@ -11,6 +11,8 @@ int currentTurn = 1;  //player 1 always starts off first
 int potentialEnergy = 0;  //used as a counter in keyPressed to store how long the stick is held down
 int resistance = 0;  //affects acceleration and therefore speed
 boolean stoneFired = false;
+boolean secondShot1 = false;
+boolean secondShot2 = false;
 
 void setup() {
   size(1280, 1024);
@@ -34,9 +36,14 @@ void draw() {
   image(scoreboard, 20, 20);
 
   if (currentTurn == 1) {    //player 1's turn
-   if(p1Stone == null) {
-     p1Stone = new Player1();
+   if(p1Stone[0] == null) {
+     p1Stone[0] = new Player1();  //adds a new instance of the Player 1 stone
      targetPosition.set(640, -1536);
+   }
+   else if(secondShot1 == true) {
+      p1Stone[1] = new Player1();  //adds a new instance of the Player 1 stone
+     targetPosition.set(640, -1536);
+     secondShot1 = false;
    }
     
     fill(240, 32, 32);        //this block is for the top right indicator for how many shots were taken
@@ -54,19 +61,31 @@ void draw() {
       delay(3000);  //gives the player a chance to see exactly where it landed before switching turns
       currentTurn = 2;
       stoneFired = false;
+      secondShot1 = true;
     }
 
     if (redPosition.y <= 100) {  //when the curling stone reaches beyond the constraints of its movement, the speed that it has carries over inversely into the target movement
       targetPosition.y = constrain(targetPosition.y, -2000, 900) - redSpeed.y;
     }
-    p1Stone.display();  //here temporarily, must store inside conditional once two player is implemeted
+    
+ p1Stone[0].display();
+ if(p1Stone[1] != null) {
+    p1Stone[1].display();
+ }
      println(targetPosition.y, redPosition.y, redSpeed.y, redAcceleration.y, potentialEnergy);  //monitoring for movement fine-tuning
   }
   
+  
+  
   if (currentTurn == 2) {    //player 2's turn
-   if(p2Stone == null) {
-     p2Stone = new Player2();
+   if(p2Stone[0] == null) {
+         p2Stone[0] = new Player2();  //adds a new instance of the Player 1 stone
      targetPosition.set(640, -1536);
+   }
+   else if(secondShot2 == true) {
+      p2Stone[1] = new Player2();  //adds a new instance of the Player 1 stone
+     targetPosition.set(640, -1536);
+     secondShot2 = false;
    }
     
     fill(32, 32, 240);        //this block is for the top right indicator for how many shots were taken
@@ -84,12 +103,18 @@ void draw() {
       delay(3000);  //gives the player a chance to see exactly where it landed before switching turns
       currentTurn = 1;
       stoneFired = false;
+      secondShot2 = true;
     }
 
     if (bluePosition.y <= 100) {  //when the curling stone reaches beyond the constraints of its movement, the speed that it has carries over inversely into the target movement
       targetPosition.y = constrain(targetPosition.y, -2000, 900) - blueSpeed.y;
     }
-    p2Stone.display();  //here temporarily, must store inside conditional once two player is implemeted
+    
+     p2Stone[0].display();
+ if(p2Stone[1] != null) {
+    p2Stone[1].display();
+ }
+ 
      println(targetPosition.y, bluePosition.y, blueSpeed.y, blueAcceleration.y, potentialEnergy);  //monitoring for movement fine-tuning
   }
 }

@@ -27,6 +27,7 @@ void setup() {
 }
 
 void draw() {
+  frameRate(60);
   noStroke();
   iceRink();
   fill(255, 0, 0);
@@ -50,6 +51,10 @@ void draw() {
     rect(1080, 20, 180, 120);
     p1Turn.resize(180, 120);
     image(p1Turn, 1080, 20);
+    if(secondShot1 == true) {
+      fill(255, 247, 0);
+      ellipse(1090, 100, 50, 50);
+    }
     
     redAcceleration.y = redAcceleration.y - resistance;
     redSpeed.y += -(redAcceleration.y);  //add value of acceleration to speed every frame. Value is inverse so that it goes forwards rather than backwards
@@ -117,6 +122,11 @@ void draw() {
  
      println(targetPosition.y, bluePosition.y, blueSpeed.y, blueAcceleration.y, potentialEnergy);  //monitoring for movement fine-tuning
   }
+  
+  if(secondShot1 == true && secondShot2 == true) {
+    println("game over");
+    gameOver();
+  }
 }
 
 void iceRink() {
@@ -133,6 +143,25 @@ void iceRink() {
   ellipse(targetPosition.x, targetPosition.y, 300, 300);  //the sample target
   fill(255);
   ellipse(targetPosition.x, targetPosition.y, 100, 100);
+}
+
+void gameOver() {
+  frameRate(1);
+  float p1DistanceFromTarget = dist(targetPosition.x, targetPosition.y, redPosition.x, redPosition.y);
+  float p2DistanceFromTarget = dist(targetPosition.x, targetPosition.y, bluePosition.x, bluePosition.y);
+  textSize(200);
+  textAlign(CENTER);
+  
+  if(p1DistanceFromTarget > p2DistanceFromTarget) {
+    fill(240, 32, 32); 
+    rect(0, 0, 1280, 1024);
+    text("PLAYER 1 WINS", width/2, height/2);
+  }
+    if(p1DistanceFromTarget < p2DistanceFromTarget) {
+    fill(32, 32, 240); 
+    rect(0, 0, 1280, 1024);
+    text("PLAYER 2 WINS", width/2, height/2);
+  }
 }
 
 void keyPressed() {

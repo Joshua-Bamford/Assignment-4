@@ -16,4 +16,6 @@ class Player1 {
     redStone.resize(100, 100);
     image(redStone, redPosition.x-50, redPosition.y-50);  //draws the curling stone sprite according to the current position. -50 is because the image draw mode is CORNERS
   }
+  
+  
 }
